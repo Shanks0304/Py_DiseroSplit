@@ -34,9 +34,9 @@ def split(request):
             # Now you can access the data as a normal Python dictionary
             uploaded_file_name = data.get('file_name')
             
-            split_audio(uploaded_file_name=uploaded_file_name)
+            result = split_audio(uploaded_file_name=uploaded_file_name)
             
-            return JsonResponse({'isFinished': True})
+            return JsonResponse({'isFinished': result})
         else:
             return JsonResponse({'status': 'error', 'message': 'This is not POST Request'}, status=400)
 

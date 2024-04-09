@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(data => {
         console.log('isFinished:', data.isFinished);   
-        document.getElementById('top_label').textContent = data.isFinished? "SPLITTING COMPLETE! DROP ANOTHER FILE?": "ERROR OCCURRED";
+        document.getElementById('top_label').textContent = data.isFinished == 'exist' ? "FOLDER WITH SONG NAME EXISTS": "ERROR OCCURRED";
         document.getElementById('beforeUploading').style.display = 'block';
         document.getElementById('afterUploading').style.display = 'none';
         })

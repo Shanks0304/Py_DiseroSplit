@@ -74,7 +74,6 @@ def run_additional_function(input_file_name, input_file, temp_dir_path, final_ou
         if stem_type in ['drums', 'bass', 'vocals']:
             selected_stems_files.append(new_file_path)      
 
-    '''
     # Create "EE" track
     ee_output_file_path = Path(final_output_dir) / f"{input_file_name} EE.wav"
     invert_phase_and_mix(input_file, selected_stems_files, ee_output_file_path)
@@ -84,7 +83,6 @@ def run_additional_function(input_file_name, input_file, temp_dir_path, final_ou
     if other_stem_path.exists():
         other_stem_path.unlink()
         print(f"Deleted 'Other' stem: {other_stem_path}")
-    '''
     
 
 

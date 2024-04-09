@@ -44,7 +44,14 @@ def split_audio(uploaded_file_name):
     media_path = os.path.join(settings.MEDIA_ROOT, 'uploads')
     input_file_path = os.path.join(media_path, uploaded_file_name)
     final_output_dir = os.path.join(settings.MEDIA_ROOT, f"downloads/{uploaded_file_name}-Stems")
-    os.makedirs(final_output_dir, exist_ok=True)
+
+    #Check output already exists
+    try:
+        os.makedirs(final_output_dir)
+    except FileExistsError:
+        return 'exist'       
+
+
     temp_dir_path = Path(tempfile.mkdtemp(dir=final_output_dir))
     temp_input_file = temp_dir_path / f"{uploaded_file_name}_temp.wav"
     adjust_volume_and_save(input_file_path, -10, temp_input_file)
