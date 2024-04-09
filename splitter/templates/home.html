@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block title %}
+      <title>Splitter</title>
+    {% endblock %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}" />
+    <script type="text/javascript" src="../static/js/home.js"></script>
+  </head>
+  <body>
+    <div class="main position-relative" id="mainWidget">
+      <!-- Setting Button-->
+      <div class="position-absolute top-0 end-0" id="settingBtn">
+        <a href="{% url 'setting' %}">
+          <button class="settings-btn">
+            <img src="../static/Splitter_GUI_Assets_3/Settings_Icon.png" alt="Settings" />
+            <div class="overlay">
+              <img src="../static/Splitter_GUI_Assets_3/Settings_Icon_Hover.png" alt="Hover Settings" />
+            </div>
+          </button>
+        </a>
+      </div>
+      <div class="position-absolute top-50 start-50 translate-middle" id="centerWidget">
+        <div style="display:none;" id="afterUploading">
+          <!-- Label -->
+          <div class="top-label position-absolute top-0 start-50 translate-middle-x">FILE DROPPED: </div>
+          <img src="../static/Splitter_GUI_Assets_3/Rectangle_Default.png" class="position-relative"/>
+          <div class="audio-label position-absolute top-50 start-50 translate-middle" id="audioName">{{audioName}}</div>
+          <!-- Split Button -->
+          <div class="position-absolute bottom-0 start-50 translate-middle-x">
+            {% csrf_token %}
+            <button class="browser-btn" id="splitBtn">
+              <img src="../static/Splitter_GUI_Assets_3/Split_Button2_Default.png" alt="Split" />
+              <div class="overlay">
+                <img src="../static/Splitter_GUI_Assets_3/Split_Button2_Hover.png" alt="Hover Split" />
+              </div>
+            </button>
+          </div>
+        </div>
+        <div style="display:block;" id="beforeUploading">
+          <div class="top-label position-absolute top-0 start-50 translate-middle-x" id="top_label">DROP YOUR REFERENCE FILE HERE</div>
+          <img src="../static/Splitter_GUI_Assets_3/Rectangle_Default_browse.png" class="position-relative"/>
+          <!-- Browser Button -->
+          <div class="position-absolute bottom-0 start-50 translate-middle-x">
+            {% csrf_token %}
+            <button class="browser-btn" type= "button" id="browseBtn" name="file">
+              <img src="../static/Splitter_GUI_Assets_3/Browse_Button_Default.png" alt="Browser" />
+              <div class="overlay">
+                <img src="../static/Splitter_GUI_Assets_3/Browse_Button_Hover.png" alt="Hover Browser" />
+              </div>
+            </button>
+            </form>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

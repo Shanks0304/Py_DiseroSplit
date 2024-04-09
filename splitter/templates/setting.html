@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block title %}
+      <title>Splitter</title>
+    {% endblock %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}" />
+  </head>
+  <body>
+    <div class="main position-relative">
+      <!-- import page -->
+      <div class="position-absolute top-0 end-0" id="exitBtn">
+        <a href="{% url 'home' %}">
+          <button class="settings-btn">
+            <img src="../static/Splitter_GUI_Assets_3/Exit_Icon_Default.png" alt="Settings" />
+            <div class="overlay">
+              <img src="../static/Splitter_GUI_Assets_3/Exit_Icon_Hover.png" alt="Hover Settings" />
+            </div>
+          </button>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
