@@ -2,13 +2,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var splitButton = document.getElementById('splitBtn');
     var fileName = document.getElementById('audioName');
     splitButton.addEventListener('click', function() {
-        fetch("/split/", {
-        method: 'POST',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': getCookie('csrftoken'),
-        },
-        body: JSON.stringify({'file_name': fileName.textContent})
+        fetch("/output_exist/", {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({'file_name': fileName.textContent})
         })
         .then(response => {
             if (!response.ok) {
@@ -17,10 +17,43 @@ document.addEventListener('DOMContentLoaded', function () {
             return response.json();
         })
         .then(data => {
-        console.log('isFinished:', data.isFinished);   
-        document.getElementById('top_label').textContent = data.isFinished == 'exist' ? "FOLDER WITH SONG NAME EXISTS": "ERROR OCCURRED";
-        document.getElementById('beforeUploading').style.display = 'block';
-        document.getElementById('afterUploading').style.display = 'none';
+            console.log('result:', data.result);
+            if(data.result) {
+                document.getElementById('splitting-title').textContent = "Processing...";
+                fetch("/split/", {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({'file_name': fileName.textContent})
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('isSuccess:', data.isSuccess);
+                    if(data.isSuccess) {            
+                        location.href = '/download/' + data.file_dir + '/'
+                    } 
+                    else {
+                        document.getElementById('top_label').textContent = "ERROR OCCURRED PLEASE TRY AGAIN!";
+                        document.getElementById('beforeUploading').style.display = 'block';
+                        document.getElementById('afterUploading').style.display = 'none';
+                    }
+                
+                })
+                .catch(error => console.error('Error:', error))
+            } 
+            else {
+                document.getElementById('top_label').textContent = "FOLDER WITH SONG NAME EXISTS";
+                document.getElementById('beforeUploading').style.display = 'block';
+                document.getElementById('afterUploading').style.display = 'none';
+            }
+        
         })
         .catch(error => console.error('Error:', error))
     });
@@ -28,12 +61,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var importButton = document.getElementById('browseBtn');
     importButton.addEventListener('click', function() {
         var input = document.createElement('input');
-        input.type = 'file';
+        input.type = 'file'; 
         input.accept = 'audio/*'
         input.onchange = function (e) {
             var file = e.target.files[0];
             console.log('Selected file:', file);
             uploadFile(file);
+            document.getElementById('top_label').textContent = "Uploading";
         };
         input.click();
     })

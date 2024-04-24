@@ -60,37 +60,44 @@ def invert_phase_and_mix(input_file_path, stems_files, output_file_path):
 
 
 def run_additional_function(input_file_name, input_file, temp_dir_path, final_output_dir):
-    # This will hold paths to the drums, bass, and vocals stems
-    selected_stems_files = [] 
-        
-    # Adjusted for loop to append selected stems paths
-    for stem_file in temp_dir_path.glob("**/*.wav"):
-        stem_type = stem_file.stem.split('_')[-1]
-        if "temp" in stem_file.stem:
-            continue
-        new_filename = f"{input_file_name} {stem_type.capitalize()}.wav"
-        new_file_path = Path(final_output_dir) / new_filename
-        adjust_volume_and_save(stem_file, 10, new_file_path)
-        if stem_type in ['drums', 'bass', 'vocals']:
-            selected_stems_files.append(new_file_path)      
-
-    # Create "EE" track
-    ee_output_file_path = Path(final_output_dir) / f"{input_file_name} EE.wav"
-    invert_phase_and_mix(input_file, selected_stems_files, ee_output_file_path)
-
-    # Additional step: Delete the "other" stem, if it exists
-    other_stem_path = Path(final_output_dir) / f"{input_file_name} Other.wav"
-    if other_stem_path.exists():
-        other_stem_path.unlink()
-        print(f"Deleted 'Other' stem: {other_stem_path}")
-    
-
-
     try:
-        # Code that may raise a PermissionError
-        shutil.rmtree(temp_dir_path)  
-    except PermissionError as e:
-        # Handle PermissionError
-        print("PermissionError:", e)
-        # Optionally, perform error handling actions such as logging, notifying the user, etc.    
+        # This will hold paths to the drums, bass, and vocals stems
+        selected_stems_files = [] 
+            
+        # Adjusted for loop to append selected stems paths
+        for stem_file in temp_dir_path.glob("**/*.wav"):
+            stem_type = stem_file.stem.split('_')[-1]
+            if "temp" in stem_file.stem:
+                continue
+            new_filename = f"{input_file_name} {stem_type.capitalize()}.wav"
+            new_file_path = Path(final_output_dir) / new_filename
+            adjust_volume_and_save(stem_file, 10, new_file_path)
+            if stem_type in ['drums', 'bass', 'vocals']:
+                selected_stems_files.append(new_file_path)      
+
+        # Create "EE" track
+        ee_output_file_path = Path(final_output_dir) / f"{input_file_name} EE.wav"
+        invert_phase_and_mix(input_file, selected_stems_files, ee_output_file_path)
+
+        # Additional step: Delete the "other" stem, if it exists
+        other_stem_path = Path(final_output_dir) / f"{input_file_name} Other.wav"
+        if other_stem_path.exists():
+            other_stem_path.unlink()
+            print(f"Deleted 'Other' stem: {other_stem_path}")
+        
+
+
+        try:
+            # Code that may raise a PermissionError
+            shutil.rmtree(temp_dir_path)  
+        except PermissionError as e:
+            # Handle PermissionError
+            print("PermissionError:", e)
+            # Optionally, perform error handling actions such as logging, notifying the user, etc.
+            return False
+        return True
+    except Exception(e):
+        print("Exception: ", e)
+        return False
+            
 
